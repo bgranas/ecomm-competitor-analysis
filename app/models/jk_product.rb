@@ -2,6 +2,8 @@ class JkProduct < ActiveRecord::Base
 	validates :url, presence: true, uniqueness: true
 	validates :title, :uniqueness => {:scope => :url}
 
+	has_many :jk_photos
+
 	def self.get_urls
 		agent = Mechanize.new
 

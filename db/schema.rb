@@ -11,10 +11,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160628160622) do
+ActiveRecord::Schema.define(version: 20160628175600) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "competitor_price_options", force: :cascade do |t|
+    t.integer  "competitor_price_id"
+    t.string   "name"
+    t.string   "price"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  create_table "competitor_prices", force: :cascade do |t|
+    t.integer  "product_id"
+    t.integer  "competitor_id"
+    t.string   "url"
+    t.decimal  "sale_price"
+    t.decimal  "original_price"
+    t.integer  "stock"
+    t.string   "discount"
+    t.boolean  "free_shipping",  default: false, null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  create_table "competitors", force: :cascade do |t|
+    t.string   "name"
+    t.string   "ecomm_platform"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
 
   create_table "jk_photos", force: :cascade do |t|
     t.integer  "jk_product_id"
@@ -42,6 +70,19 @@ ActiveRecord::Schema.define(version: 20160628160622) do
     t.integer  "ship_weight"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+  end
+
+  create_table "manufacturers", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.integer  "manufacturer_id"
+    t.string   "title"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
 end
