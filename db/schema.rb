@@ -11,18 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160628175600) do
+ActiveRecord::Schema.define(version: 20160628175425) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "competitor_price_options", force: :cascade do |t|
-    t.integer  "competitor_price_id"
-    t.string   "name"
-    t.string   "price"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-  end
 
   create_table "competitor_prices", force: :cascade do |t|
     t.integer  "product_id"
@@ -39,9 +31,11 @@ ActiveRecord::Schema.define(version: 20160628175600) do
 
   create_table "competitors", force: :cascade do |t|
     t.string   "name"
+    t.string   "home_url"
+    t.string   "all_products_url"
     t.string   "ecomm_platform"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   create_table "jk_photos", force: :cascade do |t|

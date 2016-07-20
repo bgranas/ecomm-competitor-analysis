@@ -1,5 +1,5 @@
 class CreateCompetitorPrices < ActiveRecord::Migration
-  def change
+  def up
     create_table :competitor_prices do |t|
     	t.references :product
     	t.references :competitor
@@ -11,5 +11,9 @@ class CreateCompetitorPrices < ActiveRecord::Migration
     	t.boolean :free_shipping, null: false, default: false
       t.timestamps null: false
     end
+  end
+
+  def down
+    drop_table :competitor_prices
   end
 end
