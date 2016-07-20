@@ -1,0 +1,13 @@
+<div class="container">
+	<div class="row">
+		<div class"col-md-12">
+			<%= form_for(:competitor_price, :url => (:action => 'grab_products', :controller => 'grabber'), html: {method: :post, autocomplete: :false}) do |f| %>
+				<p><%= f.label :competitor %>: <%= f.text_field :competitor %></p>
+				<p><%= f.label :ecomm_provider %>: <%= f.text_field :ecomm_provider %></p>
+				<p><%= f.label :manufacturer %>: <%= f.text_field :manufacturer %></p>
+				<p><%= f.label :url %>: <%= f.text_field :url %></p>
+			<% end %>
+		</div>
+
+	</div>
+</div>

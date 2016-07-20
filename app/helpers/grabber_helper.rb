@@ -1,0 +1,2 @@
+module GrabberHelper
+end
