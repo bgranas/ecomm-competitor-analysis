@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160628175600) do
+ActiveRecord::Schema.define(version: 20160722232605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20160628175600) do
     t.integer  "competitor_price_id"
     t.string   "header"
     t.string   "title"
-    t.string   "price"
+    t.decimal  "price"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
   end
@@ -38,11 +38,27 @@ ActiveRecord::Schema.define(version: 20160628175600) do
     t.datetime "updated_at",                     null: false
   end
 
-  create_table "competitors", force: :cascade do |t|
-    t.string   "name"
-    t.string   "ecomm_platform"
+  create_table "competitor_scrape_terms", force: :cascade do |t|
+    t.integer  "competitor_id"
+    t.string   "title"
+    t.string   "sale_price"
+    t.string   "original_price"
+    t.string   "free_shipping"
+    t.string   "stock"
+    t.string   "discount"
+    t.string   "option_title"
+    t.string   "option_price"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+  end
+
+  create_table "competitors", force: :cascade do |t|
+    t.string   "name"
+    t.string   "home_url"
+    t.string   "all_products_url"
+    t.string   "ecomm_platform"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   create_table "jk_photos", force: :cascade do |t|
@@ -79,10 +95,18 @@ ActiveRecord::Schema.define(version: 20160628175600) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "product_matches", force: :cascade do |t|
+    t.integer  "reference_competitor_price"
+    t.integer  "match_competitor_price"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
   create_table "products", force: :cascade do |t|
+    t.integer  "manufacturer_id"
     t.string   "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
 end

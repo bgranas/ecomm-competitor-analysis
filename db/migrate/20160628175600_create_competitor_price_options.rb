@@ -4,7 +4,7 @@ class CreateCompetitorPriceOptions < ActiveRecord::Migration
     	t.references :competitor_price
     	t.string :header
     	t.string :title
-    	t.string :price
+    	t.decimal :price
       t.timestamps null: false
     end
   end

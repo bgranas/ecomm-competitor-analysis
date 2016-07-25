@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   get 'grabber/index'
-  get 'grabber/grab_products' => 'grabber#grab_products', as: 'grab_products' 
+  get 'grabber/all_prices'
+  match 'grabber/grab_products' => 'grabber#grab_products', via: [:post], as: 'grab_products' 
+  match 'grabber/match_products' => 'grabber#match_products', via: [:post], as: 'match_products' 
+  match 'grabber/save_scrape_terms' => 'grabber#save_scrape_terms', via: [:post], as: 'save_scrape_terms' 
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

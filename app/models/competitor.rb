@@ -1,5 +1,6 @@
 class Competitor < ActiveRecord::Base
-
+	has_many :competitor_prices
+	has_one :competitor_scrape_term
 	#Find ecommerce solution
 	##Shopify has Shopify CDN links in the site head 
 	##WooCommerce (WordPress)

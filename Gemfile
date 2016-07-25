@@ -35,6 +35,8 @@ gem 'nokogiri'
 
 gem 'mechanize', '~> 2.7', '>= 2.7.4'
 
+gem 'fuzzy_match'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
