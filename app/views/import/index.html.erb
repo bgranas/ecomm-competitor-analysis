@@ -1,0 +1,31 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<h2>Scrape All Products URL</h2>
+			<%= form_for(:raw_products, :url => {:action => 'import_product_urls', :controller => 'import'}, html: {method: :post, autocomplete: :false}) do |f| %>
+				<p><%= f.label :all_products_url %>: <%= f.text_field :all_products_url, id: 'all_products_url' %></p>
+				<p><%= f.label :scrape_term %>: <%= f.text_field :scrape_term, id: 'all_products_scrape_term' %></p>
+				<%= f.submit 'Submit', class: "btn btn-success" %>
+			<% end %>
+			<button id="test-all-products-url" class="btn btn-warning">Test URL</button>
+			<p id="all-products-url-test-data" class="hidden"></p>
+		</div>
+		<div class="col-md-12">
+			<h2>Scrape Individual Products URLs</h2>
+			<%= form_for(:terms, :url => {:action => 'scrape_product_urls', :controller => 'import'}, html: {method: :post, autocomplete: :false}) do |f| %>
+				<p><%= f.label :title_term %>: <%= f.text_field :title_term %></p>
+				<p><%= f.label :sale_price_term %>: <%= f.text_field :sale_price_term %></p>
+				<p><%= f.label :orig_price_term %>: <%= f.text_field :orig_price_term %></p>
+				<p><%= f.label :shipping_term %>: <%= f.text_field :shipping_term %></p>
+				<p><%= f.label :stock_term %>: <%= f.text_field :stock_term %></p>
+				<p><%= f.label :discount_term %>: <%= f.text_field :discount_term %></p>
+				<p><%= f.label :option_title_term %>: <%= f.text_field :option_title_term %></p>
+				<p><%= f.label :option_price_term %>: <%= f.text_field :option_price_term %></p>
+				<p><%= f.hidden_field :competitor %></p>
+				<%= f.submit 'Submit', class: "btn btn-success" %>
+				<button id="test-individual-products-url" class="btn btn-warning">Test URL</button>
+			<% end %>
+		</div>
+	</div>
+</div>
+

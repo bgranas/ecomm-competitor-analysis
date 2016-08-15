@@ -11,23 +11,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160722232605) do
+ActiveRecord::Schema.define(version: 20160814030426) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
-  create_table "competitor_price_options", force: :cascade do |t|
-    t.integer  "competitor_price_id"
-    t.string   "header"
-    t.string   "title"
-    t.decimal  "price"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+  create_table "client_competitors", force: :cascade do |t|
+    t.integer  "store_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table "competitor_prices", force: :cascade do |t|
-    t.integer  "product_id"
-    t.integer  "competitor_id"
+  create_table "manufacturers", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.integer  "manufacturer_id"
+    t.string   "title"
+    t.string   "upc"
+    t.integer  "weight"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  create_table "raw_products", force: :cascade do |t|
+    t.integer  "store_id"
     t.string   "url"
     t.decimal  "sale_price"
     t.decimal  "original_price"
@@ -38,7 +50,20 @@ ActiveRecord::Schema.define(version: 20160722232605) do
     t.datetime "updated_at",                     null: false
   end
 
-  create_table "competitor_scrape_terms", force: :cascade do |t|
+  create_table "store_products", force: :cascade do |t|
+    t.integer  "store_id"
+    t.integer  "product_id"
+    t.string   "url"
+    t.decimal  "sale_price"
+    t.decimal  "original_price"
+    t.integer  "stock"
+    t.string   "discount"
+    t.boolean  "free_shipping",  default: false, null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  create_table "store_scrape_terms", force: :cascade do |t|
     t.integer  "competitor_id"
     t.string   "title"
     t.string   "sale_price"
@@ -52,61 +77,16 @@ ActiveRecord::Schema.define(version: 20160722232605) do
     t.datetime "updated_at",     null: false
   end
 
-  create_table "competitors", force: :cascade do |t|
+  create_table "stores", force: :cascade do |t|
     t.string   "name"
     t.string   "home_url"
     t.string   "all_products_url"
     t.string   "ecomm_platform"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.hstore   "fuzzy_match_stop_words"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
-  create_table "jk_photos", force: :cascade do |t|
-    t.integer  "jk_product_id"
-    t.string   "photo_url"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  create_table "jk_products", force: :cascade do |t|
-    t.string   "url"
-    t.string   "title"
-    t.decimal  "price"
-    t.text     "description"
-    t.string   "model"
-    t.string   "interior_dimension"
-    t.string   "exterior_dimension"
-    t.string   "max_temp"
-    t.string   "volts"
-    t.string   "amps"
-    t.string   "watts"
-    t.string   "plug"
-    t.string   "breaker"
-    t.string   "wire_gauge"
-    t.integer  "prod_weight"
-    t.integer  "ship_weight"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-  end
-
-  create_table "manufacturers", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "product_matches", force: :cascade do |t|
-    t.integer  "reference_competitor_price"
-    t.integer  "match_competitor_price"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-  end
-
-  create_table "products", force: :cascade do |t|
-    t.integer  "manufacturer_id"
-    t.string   "title"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-  end
+  add_index "stores", ["fuzzy_match_stop_words"], name: "index_stores_on_fuzzy_match_stop_words", using: :btree
 
 end

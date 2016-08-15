@@ -1,0 +1,13 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<h2>Create new Client or Competitor Store</h2>
+			<%= form_for(:store, :url => {:action => 'create', :controller => 'store'}, html: {method: :post, autocomplete: :false}) do |f| %>
+				<p><%= f.label :home_url %>: <%= f.text_field :all_products_url %></p>
+				<p><%= f.label :ecomm_provider %>: <%= f.text_field :ecomm_provider %></p>
+				<%= f.submit 'Submit', class: "btn btn-success" %>
+				<button id="test-all-products-url" class="btn btn-warning">Test URL</button>
+			<% end %>
+		</div>
+	</div>
+</div>
