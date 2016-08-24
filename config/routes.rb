@@ -2,16 +2,21 @@ Rails.application.routes.draw do
   get 'store/index'
   get 'store/new'
   match 'store/create' => 'store#create', via: [:post], as: 'create_store'
+  match 'store/edit/:id' => 'store#edit', via: [:get], as: 'edit_store'
+  match 'store/update' => 'store#update', via: [:post], as: 'update_store'
+  match 'store/save_scrape_terms' => 'store#save_scrape_terms', via: [:post], as: 'save_scrape_terms'
+  match 'store/save_all_products_url' => 'store#save_all_products_url', via: [:post], as: 'save_all_products_url'
 
   get 'dashboard/index'
 
   get 'match/index'
 
   get 'import/index'
-  match 'import/test_index_product_urls' => 'import#test_index_product_urls', via: [:post], as: 'test_index_product_urls'
+  match 'import/view/:id' => 'import#view', via: [:get], as: 'import_view'
+  match 'import/test_index_product_urls/:id' => 'import#test_index_product_urls', via: [:get], as: 'test_index_product_urls'
   match 'import/test_product_page_url' => 'import#test_product_page_url', via: [:post], as: 'test_product_page_url'
-  match 'import/import_product_urls' => 'import#import_product_urls', via: [:post], as: 'import_product_urls'
-  match 'import/scrape_product_urls' => 'import#scrape_product_urls', via: [:post], as: 'scrape_product_urls'
+  match 'import/import_product_urls/:id' => 'import#import_product_urls', via: [:get], as: 'import_product_urls'
+  match 'import/import_product_pages/:id' => 'import#import_product_pages', via: [:get], as: 'import_product_pages'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

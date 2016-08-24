@@ -3,11 +3,12 @@ class CreateRawProducts < ActiveRecord::Migration
     create_table :raw_products do |t|
     	t.references :store
     	t.string :url
+      t.string :product_title
     	t.decimal :sale_price
     	t.decimal :original_price
     	t.integer :stock
     	t.string :discount
-    	t.boolean :free_shipping, null: false, default: false
+    	t.decimal :shipping
       t.timestamps null: false
     end
   end

@@ -1,2 +1,22 @@
-<h1>Match#index</h1>
-<p>Find me in app/views/match/index.html.erb</p>
+<div class="container">
+	<div class= "row">
+	</div>
+		<% i = 1 %>
+		<% @client.each do |prod| %>
+			<% match = @fuzzy.find_with_score(prod.product_title) %>		
+			<div class="row" style="background-color: <%= "#00ffad" if match[1] > 0.5 %>">
+					<div class="col-md-1">
+						<p><%= i %>.</p>
+					</div>
+					<div class="col-md-5">
+						<p><b><%= prod.product_title %></b> <%= prod.sale_price %></p>
+					</div>
+					<div class="col-md-6">
+						
+						<p><b><%= match[0].title %></b><br />
+							<%= match[1] %>    /     <%= match[2] %></p>
+					</div>
+			<% i = i + 1 %>
+			</div>
+		<% end %>
+</div>

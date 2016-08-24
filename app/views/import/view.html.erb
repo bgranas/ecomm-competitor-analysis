@@ -1,0 +1,14 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+		<h1>Import products for <%= @store.name %></h1>
+			<button class="btn btn-warning"><%= link_to('Test All Products URL', test_index_product_urls_path(@store.id)) %></button>
+			<button class="btn btn-success"><%= link_to('Import All Products URL', import_product_urls_path(@store.id)) %></button>
+			<button class="btn btn-warning">Test Product Page</button>
+			<button class="btn btn-success"><%= link_to('Import Product Pages', import_product_pages_path(@store.id)) %></button>
+		</div>
+		<% if @test_results %>
+			<%= render partial: 'test_all_products_url', :test_results => @test_results %>
+		<% end %>
+	</div>
+</div>

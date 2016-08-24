@@ -1,9 +1,28 @@
 <div class="container">
 	<div class="row">
-		<div class="col-md-12">
-			<% @stores.each do |store| %>
-				<p><%= store.name %></p>
-			<% end %>
+		<div class="col-md-5">
+			<h3>Store</h3>
 		</div>
+		<div class="col-md-5">
+			<h3>Competitors</h3>
+		</div>
+		<div class="col-md-2">
+			<h3>Edit</h3>
+		</div>
+	</div>
+	<div class="row">
+		<% @stores.each do |store| %>
+				<div class="col-md-5">
+					<p><%= store.name %></p>
+				</div>
+				<div class="col-md-5">
+					<p><%=  %></p>
+				</div>
+					<div class="col-md-2">
+						<p><%= link_to('Edit', edit_store_path(store.id) ) %></p>
+						<p><%= link_to('Import', import_view_path(store.id) ) %></p>
+				</div>
+		<% end %>
+
 	</div>
 </div>

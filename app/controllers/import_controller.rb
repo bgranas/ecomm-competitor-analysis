@@ -1,40 +1,55 @@
 class ImportController < ApplicationController
 
-  require 'fuzzy_match'
+  
 	#set SSL_CERT_FILE=C:\RailsInstaller\cacert.pem
   def index
   	
   end
 
+  def view
+  	@store = Store.find_by_id(params[:id])
+  end
+
   #Takes in a URL and just pulls in the URLs for each product on that page i.e. does't follow any links, just scrapes one page
   def import_product_urls
-  	url = params[:raw_products][:all_products_url]
-   	scrape_term = params[:raw_products][:scrape_term]
+  	store = Store.find_by_id(params[:id])
+  	urls = StoreAllProductsUrl.where(store_id: store.id)
+   	scrape_store = StoreScrapeTerm.find_by_store_id(store.id)
+   	scrape_term = scrape_store.all_products
 
   	agent = Mechanize.new
+  	urls.each do |url|
+	  	page = agent.get(url.all_product_url)
 
-  	page = agent.get(url)
+	  	#scrape term must always be of form page.search('....')
+	  	@result = eval(scrape_term)
 
-  	@result = page.search(eval(scrape_term))
-
-  	@result.each do |page|
-  		RawProduct.create(store_id: 2, url: page.text)
-  	end
-
+	  	@result.each do |url|
+	  		RawProduct.create(store_id: store.id, url: url["href"])
+	  	end
+	  end
   	redirect_to(:back)
   end
 
   def test_index_product_urls
-  	url = params[:url]
-  	scrape_term = params[:scrape_term]
-
+  	store = Store.find_by_id(params[:id])
+  	urls = StoreAllProductsUrl.where(store_id: store.id)
+   	scrape_store = StoreScrapeTerm.find_by_store_id(store.id)
+   	scrape_term = scrape_store.all_products
+   	puts "*********term: " + scrape_term.to_s
+   	@test_result = []
   	agent = Mechanize.new
+  	urls.each do |url|
+	  	page = agent.get(url.all_product_url)
 
-  	page = agent.get(url)
-
-  	@result = page.search(eval(scrape_term))[1]
-
-  	render partial: 'import/test_results' 
+	  	#scrape term must always be of form page.search('....')
+	  	results = eval(scrape_term)
+	  	results.each do |r|
+	  		@test_result << r["href"]	
+	  	end	
+	  end
+	  puts '*************result: ' + @test_result[0].to_s
+  	redirect_to('/import/view/' + store.id.to_s) 
 
   end
 
@@ -45,21 +60,43 @@ class ImportController < ApplicationController
 
 
   #Calls multiple URLs and scrapes the product info off those pages
-  def scrape_product_urls
+  def import_product_pages
+  	store = Store.find_by_id(params[:id])
+  	
+    raw_prod = RawProduct.where(store_id: store.id)
+    term = StoreScrapeTerm.find_by_store_id(store.id)
+  	agent = Mechanize.new
 
-  end
+  	raw_prod.each do |prod|
+  		url = prod.url
+      puts 'URL: ' + url.to_s
+  		product_page = agent.get(url)
 
+  		title = eval(term.product_title)
+  		sale_price = eval(term.sale_price)
 
-  def all_prices
-    @sc = Product.where("id > ?", 75).where("id < ?", 235)
-    @comp = Product.where("id < ?", 76) 
+      #not always an original price
+      original_price = ""
+      if term.original_price && eval(term.original_price)
+  		  original_price = eval(term.original_price)
+      end
+  		shipping = eval(term.shipping)
+  		stock = eval(term.stock)
 
-    @fuzzy = FuzzyMatch.new(@comp, :read => :title, :stop_words => ["Evenheat","Jen-Ken","Kiln", "Glass", "Ceramic", "Knife", "Oven", "Porcelain/China", "Heat", "Treat", "Element"])
-   
-    @matched = []
-    prods = ProductMatch.all
-    @matched = prods.map(&:reference_competitor_price)
+  		#prod = Product.find_or_create_by(manufacturer_id: manufacturer.id, title: title)
+  		updated_product = prod.update_attributes(product_title: title, sale_price: sale_price, original_price: original_price, shipping: shipping, stock: stock)
 
+      #Only checking Shopify options for now
+      if term.option_container != ""
+      	options = eval(term.option_container)
+    		options.each do |option|
+    			op_title = title + " " + eval(term.option_title)
+          op_price = eval(term.option_price)
+    			RawProduct.create(store_id: store.id, url: url, product_title: op_title, sale_price: op_price, shipping: shipping)
+    		end
+    	end
+    end
+    redirect_to(:back)
   end
 
   def match_products
@@ -74,59 +111,5 @@ class ImportController < ApplicationController
       ProductMatch.find_or_create_by(reference_competitor_price: ref, match_competitor_price: match)
     end
     redirect_to(:back)
-  end
-
-  def grab_products
-  	competitor = Competitor.find_or_create_by(name: params[:competitor_price][:competitor])
-  	
-    #manufacturer = Manufacturer.find_or_create_by(name: params[:competitor_price][:manufacturer])
-  	#url = params[:competitor_price][:url]
-    products = CompetitorPrice.where(competitor_id: competitor.id)
-  	agent = Mechanize.new
-
-  	products.each do |prod|
-  		url = prod.url
-      prod_url = "http://www.kilnfrog.com" + url
-      puts 'URL: ' + prod_url.to_s
-  		product_page = agent.get(prod_url)
-
-  		title = eval(competitor.competitor_scrape_term.title)
-  		sale_price = eval(competitor.competitor_scrape_term.sale_price)
-      #not always an original price
-      #if competitor.competitor_scrape_term.original_price && eval(competitor.competitor_scrape_term.original_price)
-  		#  original_price = eval(competitor.competitor_scrape_term.original_price)
-      #end
-  		free_shipping = true
-
-  		#prod = Product.find_or_create_by(manufacturer_id: manufacturer.id, title: title)
-  		prod_price = CompetitorPrice.create(product_id: prod.id, competitor_id: competitor.id, url: prod_url, sale_price: sale_price, free_shipping: free_shipping)
-
-      #Only checking Shopify options for now
-      #if competitor.ecomm_platform == "Shopify"
-      #	options = product_page.search('select option')
-    	#	options.each do |option|
-    	#			title = eval(competitor.competitor_scrape_term.option_title)
-      #     price = eval(competitor.competitor_scrape_term.option_price)
-    	#			CompetitorPriceOption.create(competitor_price_id: prod_price.id, title: title, price: price)
-    	#	end
-     
-    end
-
-    redirect_to action: 'index'
-  end
-
-  def save_scrape_terms
-    competitor = Competitor.find_or_create_by(name: params[:terms][:competitor])
-    title = params[:terms][:title_term]
-    sale_price = params[:terms][:sale_price_term]
-    original_price = params[:terms][:original_price_term]
-    shipping = params[:terms][:shipping_term]
-    stock = params[:terms][:sotck_term]
-    discount = params[:terms][:discount_term]
-    option_title = params[:terms][:option_title_term]
-    option_price = params[:terms][:option_price_term]
-
-    CompetitorScrapeTerm.find_or_create_by(competitor_id: competitor.id, title: title, sale_price: sale_price, original_price: original_price, free_shipping: shipping, stock: stock, discount: discount, option_title: option_title, option_price: option_price)
-    redirect_to action: 'index'
   end
 end

@@ -1,6 +1,6 @@
-class CreateStoreProducts < ActiveRecord::Migration
+class CreateHistoricalStoreProducts < ActiveRecord::Migration
   def up
-    create_table :store_products do |t|
+    create_table :historical_store_products do |t|
     	t.references :store
     	t.references :product
     	t.string :url
@@ -15,6 +15,6 @@ class CreateStoreProducts < ActiveRecord::Migration
   end
 
   def down
-    drop_table :store_products
+  	drop_table :historical_store_products
   end
 end

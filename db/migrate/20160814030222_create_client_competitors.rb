@@ -1,8 +1,8 @@
 class CreateClientCompetitors < ActiveRecord::Migration
   def up
     create_table :client_competitors do |t|
-    	t.references :store
-    	t.references :store
+    	t.references :client
+    	t.references :competitor
       t.timestamps null: false
     end
   end

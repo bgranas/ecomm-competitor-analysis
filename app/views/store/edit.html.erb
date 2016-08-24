@@ -1,0 +1,41 @@
+<div class="container">
+	<div class="row">
+		<h1><%= @store.name %></h1>
+		<div class="col-md-12">
+			<h2>Create new Client or Competitor Store</h2>
+			<%= form_for(:store, :url => {:action => 'update', :controller => 'store'}, html: {method: :post, autocomplete: :false}) do |f| %>
+				<p><%= f.label :home_url %>: <%= f.text_field :home_url, placeholder: @store.home_url %></p>
+				
+				<p><%= f.label :ecomm_platform %>: <%= f.text_field :ecomm_platform, placeholder: @store.ecomm_platform %></p>
+				
+				<%= f.hidden_field :store_id, value: @store.id %>
+				<%= f.submit 'Submit', class: "btn btn-success" %>
+			<% end %>
+		</div>
+		<div class="col-md-12">
+			<h2>Edit All Product URLs</h2>
+			<%= form_for(:store_all_products_url, :url => {:action => 'save_all_products_url', :controller => 'store'}, html: {method: :post, autocomplete: :false}) do |f| %>
+				<p><%= f.label :store_all_products_url %>: <%= f.text_field :store_all_products_url %></p>
+				<%= f.hidden_field :store_id, value: @store.id %>
+				<%= f.submit 'Submit', class: "btn btn-success" %>
+			<% end %>
+
+		</div>
+		<div class="col-md-12">
+			<h2>Edit Client or Competitor Scrape Terms</h2>
+			<%= form_for(:terms, :url => {:action => 'save_scrape_terms', :controller => 'store'}, html: {method: :post, autocomplete: :false}) do |f| %>
+				<p><%= f.label :all_products %>: <%= f.text_field :all_products, placeholder: @terms.all_products %></p>
+				<p><%= f.label :product_title %>: <%= f.text_field :product_title, placeholder: @terms.product_title %></p>
+				<p><%= f.label :sale_price %>: <%= f.text_field :sale_price, placeholder: @terms.sale_price %></p>
+				<p><%= f.label :original_price %>: <%= f.text_field :original_price, placeholder: @terms.original_price %></p>
+				<p><%= f.label :shipping %>: <%= f.text_field :shipping, placeholder: @terms.shipping %></p>
+				<p><%= f.label :stock %>: <%= f.text_field :stock, placeholder: @terms.stock %></p>
+				<p><%= f.label :option_container %>: <%= f.text_field :option_container, placeholder: @terms.option_container %></p>
+				<p><%= f.label :option_title %>: <%= f.text_field :option_title, placeholder: @terms.option_title %></p>
+				<p><%= f.label :option_price %>: <%= f.text_field :option_price, placeholder: @terms.option_price %></p>
+				<%= f.hidden_field :store_id, value: @store.id %>
+				<%= f.submit 'Submit', class: "btn btn-success" %>
+			<% end %>
+		</div>
+	</div>
+</div>

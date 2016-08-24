@@ -3,10 +3,17 @@
 		<div class="col-md-12">
 			<h2>Create new Client or Competitor Store</h2>
 			<%= form_for(:store, :url => {:action => 'create', :controller => 'store'}, html: {method: :post, autocomplete: :false}) do |f| %>
-				<p><%= f.label :home_url %>: <%= f.text_field :all_products_url %></p>
-				<p><%= f.label :ecomm_provider %>: <%= f.text_field :ecomm_provider %></p>
+				<p><%= f.label :home_url %>: <%= f.text_field :home_url %></p>
+				<p><%= f.label :ecomm_platform %>: <%= f.text_field :ecomm_platform %></p>
+				<h3>Scrape Terms</h3>
+				<p><%= f.label :product_title %>: <%= f.text_field :product_title %></p>
+				<p><%= f.label :sale_price %>: <%= f.text_field :sale_price %></p>
+				<p><%= f.label :original_price %>: <%= f.text_field :original_price %></p>
+				<p><%= f.label :shipping %>: <%= f.text_field :shipping %></p>
+				<p><%= f.label :stock %>: <%= f.text_field :stock %></p>
+				<p><%= f.label :option_title %>: <%= f.text_field :option_title %></p>
+				<p><%= f.label :option_price %>: <%= f.text_field :option_price %></p>
 				<%= f.submit 'Submit', class: "btn btn-success" %>
-				<button id="test-all-products-url" class="btn btn-warning">Test URL</button>
 			<% end %>
 		</div>
 	</div>
