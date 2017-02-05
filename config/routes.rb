@@ -3,13 +3,15 @@ Rails.application.routes.draw do
   get 'store/new'
   match 'store/create' => 'store#create', via: [:post], as: 'create_store'
   match 'store/edit/:id' => 'store#edit', via: [:get], as: 'edit_store'
+  match 'store/show/:id' => 'store#show', via: [:get], as: 'show_store'
   match 'store/update' => 'store#update', via: [:post], as: 'update_store'
   match 'store/save_scrape_terms' => 'store#save_scrape_terms', via: [:post], as: 'save_scrape_terms'
   match 'store/save_all_products_url' => 'store#save_all_products_url', via: [:post], as: 'save_all_products_url'
 
-  get 'dashboard/index'
+  match 'dashboard/show/:id' => 'dashboard#show', via: [:get], as: 'dashboard_show'
 
-  get 'match/index'
+  match 'match/show/:id' => 'match#show', via: [:get], as: 'match_store'
+   match 'match/match_products' => 'match#match_products', via: [:post], as: 'match_products'
 
   get 'import/index'
   match 'import/view/:id' => 'import#view', via: [:get], as: 'import_view'
@@ -73,5 +75,4 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 
-  get 'jk_products/index' => 'jk_products#index'
 end

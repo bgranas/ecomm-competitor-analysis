@@ -1,0 +1,30 @@
+<div class="container">
+	<div class= "row">
+	</div>
+		<% i = 1 %>
+		<%= form_for(:match, :url => {:action => 'match_products', :controller => 'match'}, html: {method: :post, autocomplete: :false}) do |f| %>	
+			<% @client.each do |prod| %>
+				<% match = @fuzzy.find_with_score(prod.product_title) %>
+					<% if match %>
+						<div class="row" style="background-color: <%= "#00ffad" if match[1] > 0.5 %>">
+								<div class="col-md-1">
+									<p><%= i %>.</p>
+								</div>
+								<div class="col-md-5">
+									<% match[1] > 0.5 ? checked = true : checked = false %>
+									<p><%= f.check_box :"#{prod.id}_#{match[0].id}", value: "#{prod.id}_#{match[0].id}", checked: checked  %><b><%= prod.product_title %></b> <%= prod.sale_price %></p>
+								</div>
+								<div class="col-md-6">
+									
+									<p><b><%= match[0].title %></b><br />
+										<%= match[1] %>    /     <%= match[2] %></p>
+								</div>			
+						<% i = i + 1 %>
+						</div>
+					<% end %>
+				<% end %>
+			<% store_id = @client[0].store_id %>
+			<%= f.hidden_field :store_id, value: store_id %>
+			<%= f.submit "Submit", class: "btn btn-success" %>
+		<% end %>
+</div>

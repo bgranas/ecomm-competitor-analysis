@@ -25,7 +25,7 @@ class ImportController < ApplicationController
 	  	@result = eval(scrape_term)
 
 	  	@result.each do |url|
-	  		RawProduct.create(store_id: store.id, url: url["href"])
+	  		RawProduct.create(store_id: store.id, url: url['href']) #['href'] FOR USAKNIFEMAKER, .text for KILNFROG
 	  	end
 	  end
   	redirect_to(:back)
@@ -85,31 +85,19 @@ class ImportController < ApplicationController
 
   		#prod = Product.find_or_create_by(manufacturer_id: manufacturer.id, title: title)
   		updated_product = prod.update_attributes(product_title: title, sale_price: sale_price, original_price: original_price, shipping: shipping, stock: stock)
-
+      prod.match_to_store_product
       #Only checking Shopify options for now
       if term.option_container != ""
       	options = eval(term.option_container)
     		options.each do |option|
     			op_title = title + " " + eval(term.option_title)
           op_price = eval(term.option_price)
-    			RawProduct.create(store_id: store.id, url: url, product_title: op_title, sale_price: op_price, shipping: shipping)
-    		end
+    			option_prod = RawProduct.create(store_id: store.id, url: url, product_title: op_title, sale_price: op_price, shipping: shipping)
+    		  option_prod.match_to_store_product
+        end
     	end
     end
-    redirect_to(:back)
+    redirect_to('/store/show/' + store.id.to_s)
   end
 
-  def match_products
-    selected_products = []
-    products = params[:match]
-    selected_products = products.map{ |key,value| key if products[key] == "1"}.to_a.compact
-    puts selected_products.to_s
-    selected_products.each_with_index do |p|
-      ref = p.split('_')[0]
-      match = p.split('_')[1]
-      puts 'saving: ' + ref.to_s + ', ' + match.to_s
-      ProductMatch.find_or_create_by(reference_competitor_price: ref, match_competitor_price: match)
-    end
-    redirect_to(:back)
-  end
 end

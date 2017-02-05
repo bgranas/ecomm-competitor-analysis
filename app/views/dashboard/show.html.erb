@@ -1,0 +1,39 @@
+<div class="container">
+	<h3>Viewing <%= @client.name %> against competitors</h3>
+	<div class="row">
+		<table>
+			<tr>
+				<th>
+					<h3>My Products</h3>
+				</th>
+				<% @competitors.each do |competitor| %>  
+				<th>
+					<h3><%= competitor.name %> Products</h3>
+				</th>
+				<% end %>
+			</tr>
+		<% @client_products.each do |prod| %>	
+			<tr class=<%= 'hidden' if @sorted_products[prod.product_id] == nil %>>
+				<td>
+					<p><b><%= prod.product_title %></b><br />
+						<%= prod.sale_price %></p>
+				</td>
+				<% @competitors.each do |competitor| %>
+						<td>
+						<% matches = @sorted_products[prod.product_id] if @sorted_products[prod.product_id]  %>
+						<% if matches %>
+							<% matches.each do |match| %>
+								
+								<% if match.store_id == competitor.id %>
+									<p style="background-color: <%= "red" if prod.sale_price > (match.sale_price + match.shipping) %>"><b><%= match.product_title %></b><br />
+										<%= match.sale_price.to_s + " (w/ Shipping: " + (match.shipping + match.sale_price).to_s + ")" %></p>
+								<% end %>
+							<% end %>
+						<% end %>
+						</td>
+				<% end %>
+			</tr>
+		<% end %>
+	</table>
+	</div>	
+</div>

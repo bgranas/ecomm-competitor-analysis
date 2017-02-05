@@ -3,6 +3,12 @@ class StoreController < ApplicationController
   	@stores = Store.all
   end
 
+  def show
+  	@store = Store.find_by_id(params[:id])
+  	@all_products = StoreProduct.where(store_id: @store.id).distinct(&:product_title)
+    @historical_products = HistoricalStoreProduct.where(store_id: @store.id)
+  end
+
   def new
 
   end
