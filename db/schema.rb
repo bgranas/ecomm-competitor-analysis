@@ -15,7 +15,6 @@ ActiveRecord::Schema.define(version: 20160817020551) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
 
   create_table "client_competitors", force: :cascade do |t|
     t.integer  "client_id"

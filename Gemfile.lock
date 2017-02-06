@@ -92,10 +92,14 @@ GEM
     multi_json (1.12.1)
     net-http-digest_auth (1.4)
     net-http-persistent (2.9.4)
+    nokogiri (1.6.8)
+      mini_portile2 (~> 2.1.0)
+      pkg-config (~> 1.1.7)
     nokogiri (1.6.8-x86-mingw32)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
     ntlm-http (0.1.1)
+    pg (0.18.4)
     pg (0.18.4-x86-mingw32)
     pkg-config (1.1.7)
     puma (3.4.0)
@@ -159,6 +163,7 @@ GEM
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
+    unf_ext (0.0.7.2)
     unf_ext (0.0.7.2-x86-mingw32)
     web-console (2.3.0)
       activemodel (>= 4.0)
@@ -168,6 +173,7 @@ GEM
     webrobots (0.1.2)
 
 PLATFORMS
+  ruby
   x86-mingw32
 
 DEPENDENCIES
@@ -190,4 +196,4 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 BUNDLED WITH
-   1.11.2
+   1.13.6

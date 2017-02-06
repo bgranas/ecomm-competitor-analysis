@@ -16,6 +16,7 @@ class Product < ActiveRecord::Base
 		evenheat = Manufacturer.find_by_name("Evenheat")
 		jenken = Manufacturer.find_by_name("Jen-Ken")
 		speedball = Manufacturer.find_by_name("Speedball")
+		aim = Manufacturer.find_by_name("AIM")
 		raw_products.each do |prod|
 			#determine mfgr
 			if prod.product_title.include? "Evenheat"
@@ -24,6 +25,8 @@ class Product < ActiveRecord::Base
 				manufacturer_id = jenken.id
 			elsif prod.product_title.include? "Speedball"
 				manufacturer_id = speedball.id
+			elsif prod.product_title.include? "AIM"
+				manufacturer_id = aim.id
 			else
 				manufacturer_id = nil
 			end
