@@ -1,28 +1,14 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a tool to monitor competitor prices of an ecommerce business. It is built in Ruby and Rails and uses the Mechanize package to gather prices, and the fuzzy_match package to match products by name across sites.
 
-Things you may want to cover:
+The user inputs the site to math against, as well as all competitor websites. For each site, you must also enter the HTML location of each compenent to track, like product title, manufacturer, and price.
 
-* Ruby version
+The first time you collect products, you will use a dashboard to manually match products to track, but the dashboard gives an accuracy percentage on each pair to make this process smooth.
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+To Do:
+* Automatic batch runs, hourly, daily, or weekly
+* Email notifications of price changes
+* Integration with Shopify or other ecommerce platforms to automatically price match
 
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
